@@ -37,8 +37,8 @@
   .progress-card .lbl{font-size:12px;color:var(--sub)}
   .bar{flex:1 1 100%;height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:6px}
   .bar>i{display:block;height:100%;background:var(--soon);width:0;transition:width .3s}
-  h2.sec{font-size:15px;font-weight:700;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--ink);display:flex;justify-content:space-between;align-items:center}
-  h2.sec a{font-size:12px;font-weight:500;color:var(--sub);text-decoration:none}
+  h2.sec{font-size:15px;font-weight:700;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--ink)}
+  .clear-note{text-align:center;color:var(--sub);font-size:14px;padding:24px 12px;background:var(--card);border:1px dashed var(--line);border-radius:12px}
   .date-section{margin-bottom:20px}
   .date-header{font-size:14px;font-weight:700;background:#efe9df;border-radius:8px;padding:6px 12px;display:inline-block;margin-bottom:8px}
   .date-header .wk{color:var(--sub);font-weight:500;margin-left:6px}
@@ -49,9 +49,8 @@
   .meeting-link{font-size:12px;color:#3d7a54;text-decoration:none;border:1px solid #cfe0d5;border-radius:6px;padding:2px 8px;white-space:nowrap}
   .meeting-empty{font-size:13px;color:var(--sub);font-style:italic;margin-bottom:8px}
   ul.todo-list{list-style:none}
-  ul.todo-list>li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;box-shadow:var(--shadow);transition:opacity .2s}
-  ul.todo-list>li.done{opacity:.5}
-  ul.todo-list>li.done .task-name{text-decoration:line-through}
+  ul.todo-list>li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;gap:10px;box-shadow:var(--shadow);transition:opacity .25s,transform .25s}
+  ul.todo-list>li.leaving{opacity:0;transform:translateX(12px)}
   input[type=checkbox]{width:18px;height:18px;margin-top:3px;flex-shrink:0;accent-color:var(--soon);cursor:pointer}
   .text{flex:1;min-width:0}
   .title-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -67,20 +66,24 @@
   .meta .value{color:var(--ink)}
   .meta .note{display:block;margin-top:3px;color:var(--sub);font-style:italic}
   .meta a{color:var(--reply);text-decoration:none}
+  details.fold{margin-top:22px;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
+  details.fold>summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:14px;list-style:none;display:flex;justify-content:space-between}
+  details.fold>summary::-webkit-details-marker{display:none}
+  details.fold>summary .arw{color:var(--sub)}
+  details.fold>.fold-body{padding:6px 14px 14px}
+  ul.done-list{list-style:none}
+  ul.done-list>li{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line)}
+  ul.done-list>li:last-child{border-bottom:none}
+  ul.done-list .task-name{font-weight:500;font-size:14px;color:var(--sub);text-decoration:line-through}
+  ul.done-list .proj{font-size:11px}
   .note-box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
-  .note-box textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;color:var(--ink);resize:vertical;background:#fffef9}
+  .note-box textarea{width:100%;min-height:80px;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;color:var(--ink);resize:vertical;background:#fffef9}
   .note-actions{display:flex;align-items:center;gap:10px;margin-top:8px}
   .note-actions button{background:var(--ink);color:#fff;border:none;border-radius:99px;padding:6px 18px;font-size:13px;cursor:pointer}
   .note-status{font-size:12px;color:var(--sub)}
-  details.completed-section{margin-top:30px;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
-  details.completed-section>summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:14px;list-style:none}
-  details.completed-section>summary::-webkit-details-marker{display:none}
-  details.completed-section>summary::before{content:"▸ ";color:var(--sub)}
-  details[open].completed-section>summary::before{content:"▾ "}
-  .done-month{padding:0 16px 12px}
+  .done-month{padding:2px 0 8px}
   .done-month h4{font-size:12px;color:var(--sub);margin-bottom:4px}
-  .done-month li{font-size:13px;color:var(--sub);padding:6px 0;border-bottom:1px dashed var(--line);text-decoration:line-through;list-style:none}
-  .empty-done{font-size:13px;color:var(--sub);font-style:italic;padding:4px 16px 14px}
+  .done-month li{font-size:13px;color:var(--sub);padding:5px 0;border-bottom:1px dashed var(--line);text-decoration:line-through;list-style:none}
   footer{margin-top:30px;text-align:center;color:var(--sub);font-size:12px}
   #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:50}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -129,7 +132,7 @@
   </header>
   <div class="progress-card" id="progress"></div>
   <div id="content"></div>
-  <footer>資料每天早上由排程自動更新 ・ 勾選/筆記即時存進 Google Sheets ・ v7.0</footer>
+  <footer>勾選/筆記即時存進 Google Sheets ・ 資料每早自動更新 ・ v8.0</footer>
 </div>
 
 <div id="toast"></div>
@@ -141,6 +144,7 @@ var SESSION_KEY = 'todo_session_v1';
 var SESSION_HOURS = 24;
 var SESSION = null;
 var DONE_MAP = {};
+var DATA = {}, TASKS = [], NOTE = '';
 
 function parseJwt(token){
   var b = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
@@ -175,8 +179,9 @@ function loadData(session){
     .then(function(res){
       if(!res.authorized){ show('view-denied'); return; }
       DONE_MAP = res.doneMap || {};
+      DATA = res.data || {}; TASKS = res.tasks || []; NOTE = res.note || '';
       displayUserInfo(session);
-      render(res.data || {}, res.tasks || [], res.note || '');
+      render();
       show('view-app');
     })
     .catch(function(e){
@@ -184,7 +189,7 @@ function loadData(session){
       show('view-error');
     });
 }
-/* 穩定 ID：專案+任務名 的簡單雜湊，跨天不變 */
+/* 穩定 ID：專案+任務名 雜湊，跨天不變 */
 function stableId(t){
   if(t.id) return t.id;
   var s = (t.proj||'') + '|' + (t.name||'');
@@ -192,28 +197,37 @@ function stableId(t){
   for(var i=0;i<s.length;i++){ h = ((h<<5)+h) + s.charCodeAt(i); h = h & 0xffffffff; }
   return 't' + (h>>>0).toString(36);
 }
+function isDone(t){ return DONE_MAP[stableId(t)] === true; }
+
 function postToggle(id, done, name, proj){
   fetch(APPS_SCRIPT_URL, {
-    method:'POST',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
     body: JSON.stringify({ action:'toggle', id:id, done:done, name:name, proj:proj, email:SESSION.email })
   }).then(function(r){return r.json();})
-    .then(function(res){ toast(res.ok ? '已儲存到 Sheets' : '儲存失敗：'+(res.error||'')); })
-    .catch(function(){ toast('儲存失敗（連線問題），畫面已更新但未存檔'); });
+    .then(function(res){ toast(res.ok ? (done?'完成！已收進今日完成':'已移回待辦') : '儲存失敗：'+(res.error||'')); })
+    .catch(function(){ toast('儲存失敗（連線問題）'); });
 }
-function onToggle(cb){
+/* 勾選：先動畫、寫入 DONE_MAP、POST，再重繪把它移到今日完成 */
+function markDone(id, name, proj, cb){
+  DONE_MAP[id] = true;
+  postToggle(id, true, name, proj);
   var li = cb.closest('li');
-  li.classList.toggle('done', cb.checked);
-  refreshStats();
-  postToggle(li.dataset.id, cb.checked, li.dataset.name, li.dataset.proj);
+  if(li){ li.classList.add('leaving'); setTimeout(render, 260); } else { render(); }
+}
+function undoDone(id, name, proj){
+  DONE_MAP[id] = false;
+  postToggle(id, false, name, proj);
+  render();
 }
 function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
 function attr(s){ return String(s==null?'':s).replace(/"/g,'&quot;'); }
+
+/* 上方待辦卡片（只給「未完成」用）*/
 function todoCard(t){
   var id = stableId(t);
-  var checked = DONE_MAP[id] === true;
-  var h = '<li data-id="'+attr(id)+'" data-name="'+attr(t.name)+'" data-proj="'+attr(t.proj||'')+'"'+(checked?' class="done"':'')+'>';
-  h += '<input type="checkbox" onchange="onToggle(this)"'+(checked?' checked':'')+'><span class="text"><span class="title-line">';
+  var h = '<li data-id="'+attr(id)+'">';
+  h += '<input type="checkbox" onchange="markDone(\''+attr(id)+'\',this.dataset.n,this.dataset.p,this)" data-n="'+attr(t.name)+'" data-p="'+attr(t.proj||'')+'">';
+  h += '<span class="text"><span class="title-line">';
   h += '<span class="priority p-'+esc(t.priority||'reply')+'">'+esc(t.priorityLabel||'回覆')+'</span>';
   if(t.proj) h += '<span class="proj">'+esc(t.proj)+'</span>';
   h += '<span class="task-name">'+esc(t.name)+'</span>';
@@ -228,50 +242,16 @@ function todoCard(t){
   h += '</span></span></li>';
   return h;
 }
-function render(d, tasks, note){
-  document.getElementById('updated').textContent = '最後更新：' + (d.updated||'') + ' ・ 資料來源：Slack ＋ Google Calendar';
-  var c = '';
-  // 每日筆記
-  var today = new Date(); var ds = today.getFullYear()+'-'+('0'+(today.getMonth()+1)).slice(-2)+'-'+('0'+today.getDate()).slice(-2);
-  c += '<h2 class="sec">📝 今日筆記（'+ds+'）</h2>';
-  c += '<div class="note-box"><textarea id="note-text" placeholder="隨手記今天的事件、決定、想法…存進 Google Sheets">'+esc(note)+'</textarea>'+
-       '<div class="note-actions"><button onclick="saveNote()">儲存筆記</button><span class="note-status" id="note-status"></span></div></div>';
-  // 任務總覽（Sheets）
-  if(tasks && tasks.length){
-    c += '<h2 class="sec">📌 任務總覽（Google Sheets）</h2><ul class="todo-list">';
-    c += tasks.map(function(t){ return todoCard({ id:t.id, priority: statusColor(t.status), priorityLabel: t.status||'任務', proj:t.proj, name:t.name, rows: t.due?[{label:'交件日期',value:t.due}]:[], note:t.note }); }).join('');
-    c += '</ul>';
-  }
-  // 本週行程與待辦
-  c += '<h2 class="sec">📅 本週行程與待辦</h2>';
-  (d.days||[]).forEach(function(day){
-    c += '<div class="date-section"><div class="date-header">'+esc(day.date)+' <span class="wk">'+esc(day.weekday||'')+'</span></div>';
-    if(day.meetings && day.meetings.length){
-      c += '<ul class="meeting-list">';
-      day.meetings.forEach(function(m){
-        c += '<li><span class="meeting-time">'+esc(m.time)+'</span><span class="meeting-title">'+esc(m.title)+'</span>';
-        if(m.link) c += '<a class="meeting-link" href="'+attr(m.link)+'" target="_blank">Meet ↗</a>';
-        c += '</li>';
-      });
-      c += '</ul>';
-    } else { c += '<div class="meeting-empty">本日暫無會議</div>'; }
-    if(day.todos && day.todos.length) c += '<ul class="todo-list">' + day.todos.map(todoCard).join('') + '</ul>';
-    c += '</div>';
-  });
-  if(d.revise && d.revise.length) c += '<h2 class="sec">✏️ 修改</h2><ul class="todo-list">' + d.revise.map(todoCard).join('') + '</ul>';
-  if(d.reply && d.reply.length) c += '<h2 class="sec">💬 記得回覆</h2><ul class="todo-list">' + d.reply.map(function(t){ t.priority='reply'; t.priorityLabel='回覆'; return todoCard(t); }).join('') + '</ul>';
-  // 已完成
-  c += '<details class="completed-section"><summary>✅ 已完成（封存）</summary>';
-  var months = Object.keys(d.completed||{}), any=false;
-  months.forEach(function(m){
-    var items = d.completed[m];
-    if(items && items.length){ any=true; c += '<div class="done-month"><h4>'+esc(m)+'</h4><ul>'+items.map(function(t){return '<li>'+esc(typeof t==='string'?t:((t.proj?t.proj+' ':'')+t.name))+'</li>';}).join('')+'</ul></div>'; }
-  });
-  if(!any) c += '<div class="empty-done">尚無已封存項目。勾選過的項目會記在 Google Sheets 的「完成紀錄」分頁。</div>';
-  c += '</details>';
-  document.getElementById('content').innerHTML = c;
-  renderStats(d.stats||{});
+/* 今日完成卡片（可取消勾選送回上方）*/
+function doneCard(t){
+  var id = stableId(t);
+  var h = '<li><input type="checkbox" checked onchange="undoDone(\''+attr(id)+'\',this.dataset.n,this.dataset.p)" data-n="'+attr(t.name)+'" data-p="'+attr(t.proj||'')+'">';
+  h += '<span class="text"><span class="title-line">';
+  if(t.proj) h += '<span class="proj">'+esc(t.proj)+'</span>';
+  h += '<span class="task-name">'+esc(t.name)+'</span></span></span></li>';
+  return h;
 }
+
 function statusColor(s){
   s = String(s||'');
   if(s.indexOf('緊急')>=0) return 'urgent';
@@ -280,22 +260,82 @@ function statusColor(s){
   if(s.indexOf('等')>=0) return 'wait';
   return 'soon';
 }
-function renderStats(s){
-  var total = document.querySelectorAll('#content ul.todo-list input[type=checkbox]').length;
-  var done = document.querySelectorAll('#content ul.todo-list li.done').length;
+
+function render(){
+  var d = DATA;
+  document.getElementById('updated').textContent = '最後更新：' + (d.updated||'') + ' ・ 資料來源：Slack ＋ Google Calendar';
+  var c = '';
+  var doneToday = []; // 收集今天勾掉的
+  var activeCount = 0;
+
+  // 把 tasks 轉成 todo 結構
+  var taskItems = (TASKS||[]).map(function(t){ return { id:t.id, priority:statusColor(t.status), priorityLabel:t.status||'任務', proj:t.proj, name:t.name, rows: t.due?[{label:'交件日期',value:t.due}]:[], note:t.note }; });
+
+  // === 本週行程與待辦 ===
+  var daysHtml = '';
+  (d.days||[]).forEach(function(day){
+    var activeTodos = (day.todos||[]).filter(function(t){ if(isDone(t)){doneToday.push(t);return false;} return true; });
+    var hasMeet = day.meetings && day.meetings.length;
+    if(!hasMeet && !activeTodos.length) return; // 沒會議也沒待辦就整天略過
+    daysHtml += '<div class="date-section"><div class="date-header">'+esc(day.date)+' <span class="wk">'+esc(day.weekday||'')+'</span></div>';
+    if(hasMeet){
+      daysHtml += '<ul class="meeting-list">';
+      day.meetings.forEach(function(m){
+        daysHtml += '<li><span class="meeting-time">'+esc(m.time)+'</span><span class="meeting-title">'+esc(m.title)+'</span>';
+        if(m.link) daysHtml += '<a class="meeting-link" href="'+attr(m.link)+'" target="_blank">Meet ↗</a>';
+        daysHtml += '</li>';
+      });
+      daysHtml += '</ul>';
+    }
+    if(activeTodos.length){ activeCount+=activeTodos.length; daysHtml += '<ul class="todo-list">'+activeTodos.map(todoCard).join('')+'</ul>'; }
+    daysHtml += '</div>';
+  });
+  if(daysHtml){ c += '<h2 class="sec">📅 本週行程與待辦</h2>' + daysHtml; }
+
+  // === 修改 ===
+  var revActive = (d.revise||[]).filter(function(t){ if(isDone(t)){doneToday.push(t);return false;} return true; });
+  if(revActive.length){ activeCount+=revActive.length; c += '<h2 class="sec">✏️ 修改</h2><ul class="todo-list">'+revActive.map(todoCard).join('')+'</ul>'; }
+
+  // === 記得回覆 ===
+  var repActive = (d.reply||[]).filter(function(t){ t.priority='reply'; t.priorityLabel='回覆'; if(isDone(t)){doneToday.push(t);return false;} return true; });
+  if(repActive.length){ activeCount+=repActive.length; c += '<h2 class="sec">💬 記得回覆</h2><ul class="todo-list">'+repActive.map(todoCard).join('')+'</ul>'; }
+
+  // === 任務總覽 ===
+  var taskActive = taskItems.filter(function(t){ if(isDone(t)){doneToday.push(t);return false;} return true; });
+  if(taskActive.length){ activeCount+=taskActive.length; c += '<h2 class="sec">📌 任務總覽</h2><ul class="todo-list">'+taskActive.map(todoCard).join('')+'</ul>'; }
+
+  // === 都清空了 ===
+  if(activeCount===0){ c += '<div class="clear-note">🎉 目前沒有待處理的事項，全部清乾淨了！</div>'; }
+
+  // === ✅ 今日完成（收合，可取消）===
+  if(doneToday.length){
+    c += '<details class="fold"'+(activeCount===0?' open':'')+'><summary>✅ 今日完成（'+doneToday.length+'）<span class="arw">▾</span></summary><div class="fold-body"><ul class="done-list">'+doneToday.map(doneCard).join('')+'</ul></div></details>';
+  }
+
+  // === 📝 今日筆記（放最後）===
+  var today = new Date(); var ds = today.getFullYear()+'-'+('0'+(today.getMonth()+1)).slice(-2)+'-'+('0'+today.getDate()).slice(-2);
+  c += '<details class="fold"><summary>📝 今日筆記（'+ds+'）<span class="arw">▾</span></summary><div class="fold-body">'+
+       '<div class="note-box"><textarea id="note-text" placeholder="隨手記今天的事件、決定、想法…存進 Google Sheets">'+esc(NOTE)+'</textarea>'+
+       '<div class="note-actions"><button onclick="saveNote()">儲存筆記</button><span class="note-status" id="note-status"></span></div></div></div></details>';
+
+  // === 📦 歷史封存 ===
+  var months = Object.keys(d.completed||{}), archHtml='';
+  months.forEach(function(m){
+    var items = d.completed[m];
+    if(items && items.length){ archHtml += '<div class="done-month"><h4>'+esc(m)+'</h4><ul>'+items.map(function(t){return '<li>'+esc(typeof t==='string'?t:((t.proj?t.proj+' ':'')+t.name))+'</li>';}).join('')+'</ul></div>'; }
+  });
+  if(archHtml){ c += '<details class="fold"><summary>📦 歷史封存<span class="arw">▾</span></summary><div class="fold-body">'+archHtml+'</div></details>'; }
+
+  document.getElementById('content').innerHTML = c;
+  renderStats(d.stats||{}, activeCount, doneToday.length);
+}
+function renderStats(s, active, done){
   document.getElementById('progress').innerHTML =
-    '<div class="stat"><span class="num" id="s-total">'+total+'</span><span class="lbl">項目總數</span></div>'+
-    '<div class="stat"><span class="num" id="s-done">'+done+'</span><span class="lbl">已完成</span></div>'+
+    '<div class="stat"><span class="num">'+active+'</span><span class="lbl">待處理</span></div>'+
+    '<div class="stat"><span class="num">'+done+'</span><span class="lbl">今日完成</span></div>'+
     '<div class="stat"><span class="num">'+(s.reply||0)+'</span><span class="lbl">記得回覆</span></div>'+
     '<div class="stat"><span class="num">'+(s.meetings||0)+'</span><span class="lbl">本週會議</span></div>'+
-    '<div class="bar"><i id="bar-fill" style="width:'+(total?(done/total*100).toFixed(0):0)+'%"></i></div>';
-}
-function refreshStats(){
-  var total = document.querySelectorAll('#content ul.todo-list input[type=checkbox]').length;
-  var done = document.querySelectorAll('#content ul.todo-list li.done').length;
-  document.getElementById('s-done').textContent = done;
-  document.getElementById('s-total').textContent = total;
-  document.getElementById('bar-fill').style.width = total?(done/total*100).toFixed(0)+'%':'0%';
+    '<div class="bar"><i style="width:'+((active+done)?(done/(active+done)*100).toFixed(0):0)+'%"></i></div>';
 }
 function saveNote(){
   var text = document.getElementById('note-text').value;
@@ -305,7 +345,7 @@ function saveNote(){
     method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
     body: JSON.stringify({ action:'savenote', date:ds, text:text, email:SESSION.email })
   }).then(function(r){return r.json();})
-    .then(function(res){ st.textContent = res.ok ? ('已存到 Sheets · '+new Date().toLocaleTimeString('zh-TW')) : ('儲存失敗：'+(res.error||'')); })
+    .then(function(res){ st.textContent = res.ok ? ('已存到 Sheets · '+new Date().toLocaleTimeString('zh-TW')) : ('儲存失敗：'+(res.error||'')); NOTE=text; })
     .catch(function(){ st.textContent = '儲存失敗（連線問題）'; });
 }
 var _tmr;

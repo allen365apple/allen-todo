@@ -11,11 +11,11 @@
     --bg:#f6f4ef; --card:#fffdf9; --ink:#2f2b26; --sub:#8a8175; --line:#e7e1d6;
     --urgent:#d9534f; --today:#e0a800; --soon:#4f9d69; --low:#9a9488; --wait:#c8c2b6;
     --reply:#8a6bbf; --revise:#e08a3c; --shadow:0 1px 3px rgba(0,0,0,.06);
+    color-scheme:light;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,"PingFang TC","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;padding:24px 16px 80px;max-width:820px;margin:0 auto;font-size:15px}
   .hidden{display:none !important}
-  /* ---- 登入/狀態畫面 ---- */
   .gate{min-height:70vh;display:flex;align-items:center;justify-content:center}
   .gate-card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:36px 32px;text-align:center;max-width:360px;width:100%}
   .gate-card h1{font-size:20px;margin-bottom:8px}
@@ -24,7 +24,6 @@
   .gate-btn{margin-top:12px;background:var(--ink);color:#fff;border:none;border-radius:99px;padding:8px 20px;font-size:14px;cursor:pointer}
   .spinner{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--ink);border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
-  /* ---- Header ---- */
   header{margin-bottom:18px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
   header h1{font-size:22px;font-weight:700;letter-spacing:.5px}
   .updated{color:var(--sub);font-size:13px;margin-top:4px}
@@ -32,14 +31,14 @@
   .user-info img{width:32px;height:32px;border-radius:50%}
   .user-info .uname{font-size:13px;font-weight:600}
   .logout{font-size:12px;color:var(--sub);background:none;border:1px solid var(--line);border-radius:99px;padding:3px 12px;cursor:pointer}
-  /* ---- 內容 ---- */
   .progress-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 18px;margin:16px 0 24px;box-shadow:var(--shadow);display:flex;gap:22px;flex-wrap:wrap}
   .progress-card .stat{display:flex;flex-direction:column}
   .progress-card .num{font-size:22px;font-weight:700}
   .progress-card .lbl{font-size:12px;color:var(--sub)}
   .bar{flex:1 1 100%;height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:6px}
-  .bar>i{display:block;height:100%;background:var(--soon);width:0}
-  h2.sec{font-size:15px;font-weight:700;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--ink)}
+  .bar>i{display:block;height:100%;background:var(--soon);width:0;transition:width .3s}
+  h2.sec{font-size:15px;font-weight:700;margin:26px 0 10px;padding-left:10px;border-left:4px solid var(--ink);display:flex;justify-content:space-between;align-items:center}
+  h2.sec a{font-size:12px;font-weight:500;color:var(--sub);text-decoration:none}
   .date-section{margin-bottom:20px}
   .date-header{font-size:14px;font-weight:700;background:#efe9df;border-radius:8px;padding:6px 12px;display:inline-block;margin-bottom:8px}
   .date-header .wk{color:var(--sub);font-weight:500;margin-left:6px}
@@ -68,6 +67,11 @@
   .meta .value{color:var(--ink)}
   .meta .note{display:block;margin-top:3px;color:var(--sub);font-style:italic}
   .meta a{color:var(--reply);text-decoration:none}
+  .note-box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow)}
+  .note-box textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;color:var(--ink);resize:vertical;background:#fffef9}
+  .note-actions{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .note-actions button{background:var(--ink);color:#fff;border:none;border-radius:99px;padding:6px 18px;font-size:13px;cursor:pointer}
+  .note-status{font-size:12px;color:var(--sub)}
   details.completed-section{margin-top:30px;border:1px solid var(--line);border-radius:12px;background:var(--card);overflow:hidden}
   details.completed-section>summary{cursor:pointer;padding:12px 16px;font-weight:700;font-size:14px;list-style:none}
   details.completed-section>summary::-webkit-details-marker{display:none}
@@ -78,12 +82,13 @@
   .done-month li{font-size:13px;color:var(--sub);padding:6px 0;border-bottom:1px dashed var(--line);text-decoration:line-through;list-style:none}
   .empty-done{font-size:13px;color:var(--sub);font-style:italic;padding:4px 16px 14px}
   footer{margin-top:30px;text-align:center;color:var(--sub);font-size:12px}
+  #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:50}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   @media (max-width:480px){ header{flex-direction:column} .user-info{align-self:flex-end} }
 </style>
 </head>
 <body>
 
-<!-- 登入畫面 -->
 <div id="view-login" class="gate">
   <div class="gate-card">
     <h1>☀️ 柏文的待辦清單</h1>
@@ -96,24 +101,20 @@
   </div>
 </div>
 
-<!-- 載入中 -->
 <div id="view-loading" class="gate hidden">
   <div class="gate-card"><div class="spinner"></div><p>驗證權限、載入資料中…</p></div>
 </div>
 
-<!-- 無權限 -->
 <div id="view-denied" class="gate hidden">
   <div class="gate-card"><h1>🚫 你沒有權限登入</h1><p>此頁面僅限授權帳號使用</p>
   <button class="gate-btn" onclick="handleLogout()">用其他帳號登入</button></div>
 </div>
 
-<!-- 錯誤 -->
 <div id="view-error" class="gate hidden">
   <div class="gate-card"><h1>⚠️ 權限驗證失敗</h1><p id="error-msg">連線發生問題，請重試</p>
   <button class="gate-btn" onclick="location.reload()">重試</button></div>
 </div>
 
-<!-- 主內容（登入後由 JS 渲染） -->
 <div id="view-app" class="hidden">
   <header>
     <div>
@@ -128,42 +129,34 @@
   </header>
   <div class="progress-card" id="progress"></div>
   <div id="content"></div>
-  <footer>由每日排程 morning-briefing-baiwen 自動更新資料 ・ v6.0（Drive 資料版）</footer>
+  <footer>資料每天早上由排程自動更新 ・ 勾選/筆記即時存進 Google Sheets ・ v7.0</footer>
 </div>
+
+<div id="toast"></div>
 
 <script>
 var GOOGLE_CLIENT_ID = '779630921524-04oa01rc8idevffihel62tq864dbhoa9.apps.googleusercontent.com';
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw_Q9mZSFYPT91Zd_x-0jkGxcb6Sx181puu3W__F7E1dgdcSLHrBr5Nsl0YdypJdeUmtg/exec';
 var SESSION_KEY = 'todo_session_v1';
 var SESSION_HOURS = 24;
+var SESSION = null;
+var DONE_MAP = {};
 
 function parseJwt(token){
-  var base64 = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
-  return JSON.parse(decodeURIComponent(atob(base64).split('').map(function(c){
-    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join('')));
+  var b = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/');
+  return JSON.parse(decodeURIComponent(atob(b).split('').map(function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2);}).join('')));
 }
 function show(id){
   ['view-login','view-loading','view-denied','view-error','view-app'].forEach(function(v){
     document.getElementById(v).classList.toggle('hidden', v !== id);
   });
 }
-function saveSession(s){
-  s.expiry = Date.now() + SESSION_HOURS*3600*1000;
-  localStorage.setItem(SESSION_KEY, JSON.stringify(s));
-}
-function getSession(){
-  try{
-    var s = JSON.parse(localStorage.getItem(SESSION_KEY));
-    if(!s || Date.now() > s.expiry){ localStorage.removeItem(SESSION_KEY); return null; }
-    return s;
-  }catch(e){ return null; }
-}
-function handleGoogleSignIn(response){
-  var p = parseJwt(response.credential);
-  var session = { email: p.email, name: p.name || p.email, picture: p.picture || '' };
-  saveSession(session);
-  loadData(session);
+function saveSession(s){ s.expiry = Date.now()+SESSION_HOURS*3600*1000; localStorage.setItem(SESSION_KEY, JSON.stringify(s)); }
+function getSession(){ try{ var s=JSON.parse(localStorage.getItem(SESSION_KEY)); if(!s||Date.now()>s.expiry){localStorage.removeItem(SESSION_KEY);return null;} return s; }catch(e){return null;} }
+function handleGoogleSignIn(r){
+  var p = parseJwt(r.credential);
+  SESSION = { email:p.email, name:p.name||p.email, picture:p.picture||'' };
+  saveSession(SESSION); loadData(SESSION);
 }
 function handleLogout(){
   localStorage.removeItem(SESSION_KEY);
@@ -173,16 +166,17 @@ function handleLogout(){
 function displayUserInfo(s){
   document.getElementById('u-name').textContent = s.name;
   var img = document.getElementById('u-pic');
-  if(s.picture){ img.src = s.picture; img.style.display=''; } else { img.style.display='none'; }
+  if(s.picture){ img.src=s.picture; img.style.display=''; } else { img.style.display='none'; }
 }
 function loadData(session){
-  show('view-loading');
+  SESSION = session; show('view-loading');
   fetch(APPS_SCRIPT_URL + '?email=' + encodeURIComponent(session.email))
     .then(function(r){ return r.json(); })
     .then(function(res){
       if(!res.authorized){ show('view-denied'); return; }
+      DONE_MAP = res.doneMap || {};
       displayUserInfo(session);
-      render(res.data);
+      render(res.data || {}, res.tasks || [], res.note || '');
       show('view-app');
     })
     .catch(function(e){
@@ -190,31 +184,65 @@ function loadData(session){
       show('view-error');
     });
 }
-/* ---------- 渲染 ---------- */
-function esc(s){ var d=document.createElement('div'); d.textContent=s==null?'':String(s); return d.innerHTML; }
+/* 穩定 ID：專案+任務名 的簡單雜湊，跨天不變 */
+function stableId(t){
+  if(t.id) return t.id;
+  var s = (t.proj||'') + '|' + (t.name||'');
+  var h = 5381;
+  for(var i=0;i<s.length;i++){ h = ((h<<5)+h) + s.charCodeAt(i); h = h & 0xffffffff; }
+  return 't' + (h>>>0).toString(36);
+}
+function postToggle(id, done, name, proj){
+  fetch(APPS_SCRIPT_URL, {
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ action:'toggle', id:id, done:done, name:name, proj:proj, email:SESSION.email })
+  }).then(function(r){return r.json();})
+    .then(function(res){ toast(res.ok ? '已儲存到 Sheets' : '儲存失敗：'+(res.error||'')); })
+    .catch(function(){ toast('儲存失敗（連線問題），畫面已更新但未存檔'); });
+}
+function onToggle(cb){
+  var li = cb.closest('li');
+  li.classList.toggle('done', cb.checked);
+  refreshStats();
+  postToggle(li.dataset.id, cb.checked, li.dataset.name, li.dataset.proj);
+}
+function esc(s){ var d=document.createElement('div'); d.textContent=(s==null?'':String(s)); return d.innerHTML; }
+function attr(s){ return String(s==null?'':s).replace(/"/g,'&quot;'); }
 function todoCard(t){
-  var h = '<li><input type="checkbox" onchange="this.closest(\'li\').classList.toggle(\'done\',this.checked);refreshStats()"><span class="text"><span class="title-line">';
-  var pl = t.priorityLabel || '回覆';
-  var pc = t.priority || 'reply';
-  h += '<span class="priority p-'+esc(pc)+'">'+esc(pl)+'</span>';
+  var id = stableId(t);
+  var checked = DONE_MAP[id] === true;
+  var h = '<li data-id="'+attr(id)+'" data-name="'+attr(t.name)+'" data-proj="'+attr(t.proj||'')+'"'+(checked?' class="done"':'')+'>';
+  h += '<input type="checkbox" onchange="onToggle(this)"'+(checked?' checked':'')+'><span class="text"><span class="title-line">';
+  h += '<span class="priority p-'+esc(t.priority||'reply')+'">'+esc(t.priorityLabel||'回覆')+'</span>';
   if(t.proj) h += '<span class="proj">'+esc(t.proj)+'</span>';
   h += '<span class="task-name">'+esc(t.name)+'</span>';
   if(t.srcDm) h += '<span class="src-dm">'+esc(t.srcDm)+'</span>';
   h += '</span><span class="meta">';
-  (t.rows||[]).forEach(function(r){
-    h += '<span class="row"><span class="label">'+esc(r.label)+'</span><span class="value">'+esc(r.value)+'</span></span>';
-  });
+  (t.rows||[]).forEach(function(r){ h += '<span class="row"><span class="label">'+esc(r.label)+'</span><span class="value">'+esc(r.value)+'</span></span>'; });
   if(t.note || t.noteLink){
     h += '<span class="note">'+esc(t.note||'');
-    if(t.noteLink) h += (t.note?' · ':'')+'<a href="'+esc(t.noteLink)+'" target="_blank">原訊息 ↗</a>';
+    if(t.noteLink) h += (t.note?' · ':'')+'<a href="'+attr(t.noteLink)+'" target="_blank">原訊息 ↗</a>';
     h += '</span>';
   }
   h += '</span></span></li>';
   return h;
 }
-function render(d){
+function render(d, tasks, note){
   document.getElementById('updated').textContent = '最後更新：' + (d.updated||'') + ' ・ 資料來源：Slack ＋ Google Calendar';
   var c = '';
+  // 每日筆記
+  var today = new Date(); var ds = today.getFullYear()+'-'+('0'+(today.getMonth()+1)).slice(-2)+'-'+('0'+today.getDate()).slice(-2);
+  c += '<h2 class="sec">📝 今日筆記（'+ds+'）</h2>';
+  c += '<div class="note-box"><textarea id="note-text" placeholder="隨手記今天的事件、決定、想法…存進 Google Sheets">'+esc(note)+'</textarea>'+
+       '<div class="note-actions"><button onclick="saveNote()">儲存筆記</button><span class="note-status" id="note-status"></span></div></div>';
+  // 任務總覽（Sheets）
+  if(tasks && tasks.length){
+    c += '<h2 class="sec">📌 任務總覽（Google Sheets）</h2><ul class="todo-list">';
+    c += tasks.map(function(t){ return todoCard({ id:t.id, priority: statusColor(t.status), priorityLabel: t.status||'任務', proj:t.proj, name:t.name, rows: t.due?[{label:'交件日期',value:t.due}]:[], note:t.note }); }).join('');
+    c += '</ul>';
+  }
+  // 本週行程與待辦
   c += '<h2 class="sec">📅 本週行程與待辦</h2>';
   (d.days||[]).forEach(function(day){
     c += '<div class="date-section"><div class="date-header">'+esc(day.date)+' <span class="wk">'+esc(day.weekday||'')+'</span></div>';
@@ -222,60 +250,67 @@ function render(d){
       c += '<ul class="meeting-list">';
       day.meetings.forEach(function(m){
         c += '<li><span class="meeting-time">'+esc(m.time)+'</span><span class="meeting-title">'+esc(m.title)+'</span>';
-        if(m.link) c += '<a class="meeting-link" href="'+esc(m.link)+'" target="_blank">Meet ↗</a>';
+        if(m.link) c += '<a class="meeting-link" href="'+attr(m.link)+'" target="_blank">Meet ↗</a>';
         c += '</li>';
       });
       c += '</ul>';
-    } else {
-      c += '<div class="meeting-empty">本日暫無會議</div>';
-    }
-    if(day.todos && day.todos.length){
-      c += '<ul class="todo-list">' + day.todos.map(todoCard).join('') + '</ul>';
-    }
+    } else { c += '<div class="meeting-empty">本日暫無會議</div>'; }
+    if(day.todos && day.todos.length) c += '<ul class="todo-list">' + day.todos.map(todoCard).join('') + '</ul>';
     c += '</div>';
   });
-  if(d.revise && d.revise.length){
-    c += '<h2 class="sec">✏️ 修改</h2><ul class="todo-list">' + d.revise.map(todoCard).join('') + '</ul>';
-  }
-  if(d.reply && d.reply.length){
-    c += '<h2 class="sec">💬 記得回覆</h2><ul class="todo-list reply-section">' + d.reply.map(function(t){
-      t.priority = t.priority || 'reply'; t.priorityLabel = t.priorityLabel || '回覆'; return todoCard(t);
-    }).join('') + '</ul>';
-  }
+  if(d.revise && d.revise.length) c += '<h2 class="sec">✏️ 修改</h2><ul class="todo-list">' + d.revise.map(todoCard).join('') + '</ul>';
+  if(d.reply && d.reply.length) c += '<h2 class="sec">💬 記得回覆</h2><ul class="todo-list">' + d.reply.map(function(t){ t.priority='reply'; t.priorityLabel='回覆'; return todoCard(t); }).join('') + '</ul>';
+  // 已完成
   c += '<details class="completed-section"><summary>✅ 已完成（封存）</summary>';
-  var months = Object.keys(d.completed||{});
-  var any = false;
+  var months = Object.keys(d.completed||{}), any=false;
   months.forEach(function(m){
     var items = d.completed[m];
-    if(items && items.length){
-      any = true;
-      c += '<div class="done-month"><h4>'+esc(m)+'</h4><ul>' + items.map(function(t){
-        return '<li>'+esc(typeof t === 'string' ? t : (t.proj?t.proj+' ':'')+t.name)+'</li>';
-      }).join('') + '</ul></div>';
-    }
+    if(items && items.length){ any=true; c += '<div class="done-month"><h4>'+esc(m)+'</h4><ul>'+items.map(function(t){return '<li>'+esc(typeof t==='string'?t:((t.proj?t.proj+' ':'')+t.name))+'</li>';}).join('')+'</ul></div>'; }
   });
-  if(!any) c += '<div class="empty-done">尚無已封存項目。過期或已確認完成的待辦，每天早上會自動搬到這裡。</div>';
+  if(!any) c += '<div class="empty-done">尚無已封存項目。勾選過的項目會記在 Google Sheets 的「完成紀錄」分頁。</div>';
   c += '</details>';
   document.getElementById('content').innerHTML = c;
-  renderStats(d.stats);
+  renderStats(d.stats||{});
+}
+function statusColor(s){
+  s = String(s||'');
+  if(s.indexOf('緊急')>=0) return 'urgent';
+  if(s.indexOf('今天')>=0||s.indexOf('明天')>=0) return 'today';
+  if(s.indexOf('完成')>=0) return 'low';
+  if(s.indexOf('等')>=0) return 'wait';
+  return 'soon';
 }
 function renderStats(s){
-  s = s || {};
   var total = document.querySelectorAll('#content ul.todo-list input[type=checkbox]').length;
+  var done = document.querySelectorAll('#content ul.todo-list li.done').length;
   document.getElementById('progress').innerHTML =
-    '<div class="stat"><span class="num" id="s-total">'+total+'</span><span class="lbl">待辦總數</span></div>'+
-    '<div class="stat"><span class="num" id="s-done">0</span><span class="lbl">已完成</span></div>'+
+    '<div class="stat"><span class="num" id="s-total">'+total+'</span><span class="lbl">項目總數</span></div>'+
+    '<div class="stat"><span class="num" id="s-done">'+done+'</span><span class="lbl">已完成</span></div>'+
     '<div class="stat"><span class="num">'+(s.reply||0)+'</span><span class="lbl">記得回覆</span></div>'+
     '<div class="stat"><span class="num">'+(s.meetings||0)+'</span><span class="lbl">本週會議</span></div>'+
-    '<div class="bar"><i id="bar-fill"></i></div>';
+    '<div class="bar"><i id="bar-fill" style="width:'+(total?(done/total*100).toFixed(0):0)+'%"></i></div>';
 }
 function refreshStats(){
   var total = document.querySelectorAll('#content ul.todo-list input[type=checkbox]').length;
   var done = document.querySelectorAll('#content ul.todo-list li.done').length;
   document.getElementById('s-done').textContent = done;
-  document.getElementById('bar-fill').style.width = total ? (done/total*100).toFixed(0)+'%' : '0%';
+  document.getElementById('s-total').textContent = total;
+  document.getElementById('bar-fill').style.width = total?(done/total*100).toFixed(0)+'%':'0%';
 }
-/* ---------- 啟動 ---------- */
+function saveNote(){
+  var text = document.getElementById('note-text').value;
+  var st = document.getElementById('note-status'); st.textContent = '儲存中…';
+  var today = new Date(); var ds = today.getFullYear()+'-'+('0'+(today.getMonth()+1)).slice(-2)+'-'+('0'+today.getDate()).slice(-2);
+  fetch(APPS_SCRIPT_URL, {
+    method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify({ action:'savenote', date:ds, text:text, email:SESSION.email })
+  }).then(function(r){return r.json();})
+    .then(function(res){ st.textContent = res.ok ? ('已存到 Sheets · '+new Date().toLocaleTimeString('zh-TW')) : ('儲存失敗：'+(res.error||'')); })
+    .catch(function(){ st.textContent = '儲存失敗（連線問題）'; });
+}
+var _tmr;
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(_tmr); _tmr=setTimeout(function(){t.classList.remove('show');},1800); }
+
 window.addEventListener('load', function(){
   var s = getSession();
   if(s){ loadData(s); } else { show('view-login'); }
